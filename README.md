@@ -11,7 +11,7 @@
 ## Installation for Visual Studio
  In order to get this project running in Visual Studio, please download Nick's version of OTTER: https://github.com/SirMouthAlot/OTTER
 
- Once you've installed this, extract the contents of this repo into the projects folder in the OTTER framework.
+ Once you've installed this, extract the root of this repo (CGAssignmentProject folder) into the projects folder in the OTTER framework.
 
  Then open the premake_build.bat file in the first level of the OTTER folder.
 
