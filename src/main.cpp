@@ -106,6 +106,65 @@ int main() {
 
 		// We'll add some ImGui controls to control our shader
 		BackendHandler::imGuiCallbacks.push_back([&]() {
+			if (ImGui::Checkbox("No Lighting", &noLighting)) {
+				noLighting = true;
+				ambientOnly = false;
+				specularOnly = false;
+				applyBloom = false;
+				ambientAndSpecular = false;
+				ambientSpecularAndBloom = false;
+			}
+			if (ImGui::Checkbox("Ambient Light Only", &ambientOnly)) {
+				noLighting = false;
+				ambientOnly = true;
+				specularOnly = false;
+				applyBloom = false;
+				ambientAndSpecular = false;
+				ambientSpecularAndBloom = false;
+			}
+			if (ImGui::Checkbox("Specular Light Only", &specularOnly)) {
+				noLighting = false;
+				ambientOnly = false;
+				specularOnly = true;
+				applyBloom = false;
+				ambientAndSpecular = false;
+				ambientSpecularAndBloom = false;
+			}
+			if (ImGui::Checkbox("Ambient and Specular Light", &ambientAndSpecular)) {
+				noLighting = false;
+				applyBloom = false;
+				ambientSpecularAndBloom = false;
+				if (ambientAndSpecular)
+				{
+					specularOnly = false;
+					ambientOnly = false;
+				}
+				else
+				{
+					specularOnly = true;
+					ambientOnly = true;
+				}
+			}
+			if (ImGui::Checkbox("Ambient and Specular Light with Custom Shader", &ambientSpecularAndBloom)) {
+				noLighting = false;
+				ambientAndSpecular = false;
+				if (ambientSpecularAndBloom)
+				{
+					specularOnly = false;
+					ambientOnly = false;
+					applyBloom = true;
+				}
+				else
+				{
+					specularOnly = true;
+					ambientOnly = true;
+					applyBloom = false;
+				}
+			}
+			shader->SetUniform("u_NoLight", (int)noLighting);
+			shader->SetUniform("u_SpecularOnly", (int)specularOnly);
+			shader->SetUniform("u_AmbientOnly", (int)ambientOnly);
+			bloomEffect->SetShaderUniform("u_ApplyBloom", (int)applyBloom);
 			/*if (ImGui::CollapsingHeader("Effect Controls"))
 			{
 				ImGui::SliderInt("Chosen Effect", &activeEffect, 0, effects.size() - 1);
@@ -147,74 +206,15 @@ int main() {
 					}
 				}
 			}*/
-			if (ImGui::CollapsingHeader("Assignment 1 Toggles"))
+			/*if (ImGui::CollapsingHeader("Assignment 1 Toggles"))
 			{
-				/*if (ImGui::ColorPicker3("Ambient Color", glm::value_ptr(ambientCol))) {
+				if (ImGui::ColorPicker3("Ambient Color", glm::value_ptr(ambientCol))) {
 					shader->SetUniform("u_AmbientCol", ambientCol);
 				}
 				if (ImGui::SliderFloat("Fixed Ambient Power", &ambientPow, 0.01f, 1.0f)) {
 					shader->SetUniform("u_AmbientStrength", ambientPow);
-				}*/
-				if (ImGui::Checkbox("No Lighting", &noLighting)) {
-					noLighting = true;
-					ambientOnly = false;
-					specularOnly = false;
-					applyBloom = false;
-					ambientAndSpecular = false;
-					ambientSpecularAndBloom = false;
 				}
-				if (ImGui::Checkbox("Ambient Light Only", &ambientOnly)) {
-					noLighting = false;
-					ambientOnly = true;
-					specularOnly = false;
-					applyBloom = false;
-					ambientAndSpecular = false;
-					ambientSpecularAndBloom = false;
-				}
-				if (ImGui::Checkbox("Specular Light Only", &specularOnly)) {
-					noLighting = false;
-					ambientOnly = false;
-					specularOnly = true;
-					applyBloom = false;
-					ambientAndSpecular = false;
-					ambientSpecularAndBloom = false;
-				}
-				if (ImGui::Checkbox("Ambient and Specular Light", &ambientAndSpecular)) {
-					noLighting = false;
-					applyBloom = false;
-					ambientSpecularAndBloom = false;
-					if (ambientAndSpecular)
-					{
-						specularOnly = false;
-						ambientOnly = false;
-					}
-					else
-					{
-						specularOnly = true;
-						ambientOnly = true;
-					}
-				}
-				if (ImGui::Checkbox("Ambient and Specular Light with Custom Shader", &ambientSpecularAndBloom)) {
-					noLighting = false;
-					ambientAndSpecular = false;
-					if (ambientSpecularAndBloom)
-					{
-						specularOnly = false;
-						ambientOnly = false;
-						applyBloom = true;
-					}
-					else
-					{
-						specularOnly = true;
-						ambientOnly = true;
-						applyBloom = false;
-					}
-				}
-				shader->SetUniform("u_NoLight", (int)noLighting);
-				shader->SetUniform("u_SpecularOnly", (int)specularOnly);
-				shader->SetUniform("u_AmbientOnly", (int)ambientOnly);
-				bloomEffect->SetShaderUniform("u_ApplyBloom", (int)applyBloom);
-			}
+			}*/
 			/*if (ImGui::CollapsingHeader("Light Level Lighting Settings"))
 			{
 				if (ImGui::DragFloat3("Light Pos", glm::value_ptr(lightPos), 0.01f, -10.0f, 10.0f)) {
